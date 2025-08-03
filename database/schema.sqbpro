@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="schema.sql" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="676"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Browsables" custom_title="0" dock_id="1" table="0,10:Browsables"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011300ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- USERS
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL
+);
+
+-- CLASSES
+CREATE TABLE IF NOT EXISTS classes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+
+-- SUBJECTS
+CREATE TABLE IF NOT EXISTS subjects (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+
+-- STUDENTS
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT,
+    last_name TEXT,
+    dob DATE,
+    class_id INTEGER,
+    FOREIGN KEY (class_id) REFERENCES classes(id)
+);
+
+-- TEACHERS
+CREATE TABLE IF NOT EXISTS teachers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT,
+    last_name TEXT,
+    subject_id INTEGER,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
+
+-- ENROLLMENTS
+CREATE TABLE IF NOT EXISTS enrollments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER,
+    subject_id INTEGER,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
+
+-- ATTENDANCE
+CREATE TABLE IF NOT EXISTS attendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER,
+    date DATE,
+    status TEXT,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- GRADES
+CREATE TABLE IF NOT EXISTS grades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER,
+    subject_id INTEGER,
+    term TEXT,
+    score REAL,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
+
+-- FEES
+CREATE TABLE IF NOT EXISTS fees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER,
+    term TEXT,
+    amount_due REAL,
+    amount_paid REAL,
+    FOREIGN KEY (student_id) REFERENCES students(id)
+);
+
+-- Sample Data
+
+INSERT INTO classes (name) VALUES ('Grade 1'), ('Grade 2'), ('Grade 3');
+INSERT INTO subjects (name) VALUES ('Math'), ('English'), ('Science');
+
+INSERT INTO students (first_name, last_name, dob, class_id) VALUES
+('Alice', 'Otieno', '2012-05-15', 1),
+('Brian', 'Kamau', '2011-11-23', 2),
+('Catherine', 'Wanjiru', '2010-02-09', 3);
+
+INSERT INTO teachers (first_name, last_name, subject_id) VALUES
+('Mr.', 'Mugo', 1),
+('Ms.', 'Achieng', 2),
+('Mrs.', 'Kariuki', 3);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
