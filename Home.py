@@ -1,6 +1,9 @@
 import streamlit as st
 from datetime import datetime
 from PIL import Image
+import pytz
+
+
 
 # Page setup
 st.set_page_config(
@@ -9,11 +12,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Set your timezone explicitly
+timezone = pytz.timezone("Africa/Nairobi")
+now = datetime.now(timezone)
+formatted_now = now.strftime("%A, %d %B %Y - %I:%M %p")
+
+
 # Logo path (adjust as needed)
 logo_path = "assets/school_logo.jpg"
 
-# Get current date/time
-now = datetime.now().strftime("%A, %d %B %Y - %I:%M %p")
 
 # Inject custom CSS for layout and animations
 st.markdown("""
@@ -120,7 +127,7 @@ with st.container():
         st.markdown(f"""
         <div class="welcome-banner">
             👋 Welcome to Mavoko SNP Primary School System &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            📅 {now}
+            📅 {formatted_now}
         </div>
         """, unsafe_allow_html=True)
 
